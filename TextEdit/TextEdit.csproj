@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x86</Platforms>
+    <StartupObject>TextEdit.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
