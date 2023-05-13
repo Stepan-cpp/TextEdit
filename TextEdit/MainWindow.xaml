@@ -15,6 +15,7 @@
         <CommandBinding Command="local:Commands.Open" Executed="OpenFile"/>
         <CommandBinding Command="local:Commands.Exit" Executed="Exit"/>
         <CommandBinding Command="local:Commands.Duplicate" Executed="Duplicate"/>
+        <CommandBinding Command="local:Commands.Reload" Executed="Reload"/>
     </Window.CommandBindings>
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"/>
@@ -55,6 +56,7 @@
                 <MenuItem Header="File">
                     <MenuItem Header="Open" Command="local:Commands.Open"/>
                     <MenuItem Header="New" Command="local:Commands.New"/>
+                    <MenuItem Header="Reopen" Command="local:Commands.Reload"/>
                     <Separator Margin="5"/>
                     <MenuItem Header="Save as" Command="local:Commands.SaveAs"/>
                     <MenuItem Header="Save" Command="local:Commands.Save"/>

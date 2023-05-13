@@ -24,6 +24,8 @@ namespace TextEdit
     {
         int indent = 4;
 
+        public static string FileToOpen = "";
+
         private string filePath = string.Empty;
         public string FilePath {
             get
@@ -58,6 +60,11 @@ namespace TextEdit
             InitializeComponent();
             StateChanged += MainWindowStateChangeRaised;
             Closing += MainWindow_Closing;
+            if (FileToOpen.Length > 0)
+            {
+                FilePath = FileToOpen;
+                Reload(default, default);
+            }
         }
 
         private void MainWindowStateChangeRaised(object sender, EventArgs e)
@@ -83,6 +90,7 @@ namespace TextEdit
 
         public void NewFile(object sender, ExecutedRoutedEventArgs args)
         {
+            IsSaved = false;
             FilePath = String.Empty;
             textBlock.Document = new FlowDocument();
         }
@@ -96,7 +104,16 @@ namespace TextEdit
             if (result.HasValue && result.Value)
             {
                 FilePath = dialog.FileName;
+                Reload(sender, args);
+            }
+        }
+
+        public void Reload(object sender, ExecutedRoutedEventArgs args)
+        {
+            if (filePath.Length>0)
+            {
                 textBlock.Document = new FlowDocument(new Paragraph(new Run(File.ReadAllText(FilePath))));
+                IsSaved = true;
             }
         }
 

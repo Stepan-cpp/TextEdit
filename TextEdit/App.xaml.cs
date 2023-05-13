@@ -13,5 +13,14 @@ namespace TextEdit
     /// </summary>
     public partial class App : Application
     {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            string[] args = e.Args;
+
+            if (args.Length > 0)
+            {
+                TextEdit.MainWindow.FileToOpen = args[0];
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace TextEdit
             Open = new RoutedCommand("Open", typeof(MainWindow));
             Save = new RoutedCommand("Save", typeof(MainWindow));
             SaveAs = new RoutedCommand("Save as", typeof(MainWindow));
+            Reload = new RoutedCommand("Reload", typeof(MainWindow));
             Exit = new RoutedCommand("Exit", typeof(MainWindow));
             Find = new RoutedCommand("Find", typeof(MainWindow));
             Replace = new RoutedCommand("Replace", typeof(MainWindow));
@@ -24,6 +25,7 @@ namespace TextEdit
             Save.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
             SaveAs.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift));
             Exit.InputGestures.Add(new KeyGesture(Key.F4, ModifierKeys.Alt));
+            Reload.InputGestures.Add(new KeyGesture(Key.R, ModifierKeys.Control));
 
             Find.InputGestures.Add(new KeyGesture(Key.F, ModifierKeys.Control));
             Replace.InputGestures.Add(new KeyGesture(Key.H, ModifierKeys.Control));
@@ -33,6 +35,7 @@ namespace TextEdit
         public static RoutedCommand Open { get; set; }
         public static RoutedCommand Save { get; set; }
         public static RoutedCommand SaveAs { get; set; }
+        public static RoutedCommand Reload { get; set; }
         public static RoutedCommand Exit { get; set; }
         public static RoutedCommand Find { get; set; }
         public static RoutedCommand Replace { get; set; }
