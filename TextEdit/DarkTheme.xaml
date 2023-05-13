@@ -4,6 +4,7 @@
 
     <SolidColorBrush x:Key="ForegroundColor" Color="#CCCCCC"/>
     <SolidColorBrush x:Key="LowlightBrush" Color="#2A2A2A"/>
+    <SolidColorBrush x:Key="LowlightBackground" Color="#282828"/>
     <Style x:Key="LowSeparator" TargetType="Separator">
         <Setter Property="Background" Value="#212121"/>
         <Setter Property="Height" Value="3"/>
@@ -33,6 +34,29 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#212121"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="#2A2A2A" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundColor}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="IsThreeState" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource LowlightBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="#A0A0A0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -88,6 +112,10 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundColor}" />
     </Style>
     <Style x:Key="RichTextBoxStyle" TargetType="RichTextBox">
+        <Setter Property="Background" Value="#202020"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundColor}"/>
+    </Style>
+    <Style x:Key="TextBoxStyle" TargetType="TextBox">
         <Setter Property="Background" Value="#202020"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundColor}"/>
     </Style>

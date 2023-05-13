@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,8 +24,13 @@ namespace TextEdit
     public partial class MainWindow : Window
     {
         int indent = 4;
+        double opacity = 0.6;
 
         public static string FileToOpen = "";
+
+        private const string HelpFilePath = "manual.txt";
+
+        private SearchAndReplace sar;
 
         private string filePath = string.Empty;
         public string FilePath {
@@ -60,11 +66,47 @@ namespace TextEdit
             InitializeComponent();
             StateChanged += MainWindowStateChangeRaised;
             Closing += MainWindow_Closing;
+            SizeChanged += MainWindow_SizeChanged;
+            LocationChanged += MainWindow_LocationChanged;
+            Loaded += MainWindow_Loaded;
             if (FileToOpen.Length > 0)
             {
                 FilePath = FileToOpen;
                 Reload(default, default);
             }
+            sar = new SearchAndReplace();
+            UpdatePosition();
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            sar.Owner = this;
+        }
+
+        void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdatePosition();
+        }
+
+        private void UpdatePosition()
+        {
+            sar.Left = Left + Width - 170;
+            sar.Top = Top + 30;
+        }
+
+        void MainWindow_LocationChanged(object sender, EventArgs e)
+        {
+            UpdatePosition();
+        }
+
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            sar.Show();
+        }
+
+        private void SarExp_Collapsed(object sender, RoutedEventArgs e)
+        {
+            sar.Hide();
         }
 
         private void MainWindowStateChangeRaised(object sender, EventArgs e)
@@ -115,6 +157,97 @@ namespace TextEdit
                 textBlock.Document = new FlowDocument(new Paragraph(new Run(File.ReadAllText(FilePath))));
                 IsSaved = true;
             }
+        }
+
+        public void Find(object sender, ExecutedRoutedEventArgs args)
+        {
+            SarExp.IsExpanded = true;
+        }
+
+        public void Replace(object sender, ExecutedRoutedEventArgs args)
+        {
+            SarExp.IsExpanded = true;
+        }
+
+        private bool simplified = false;
+
+        public void Simplify(object sender, ExecutedRoutedEventArgs args)
+        {
+            simplified = true;
+            Opacity = opacity;
+            AppBarRow.Height = new GridLength(0);
+            AppBar.Visibility = Visibility.Collapsed;
+            textBlock.Margin = new Thickness(0);
+        }
+
+        public void Unsimplify(object sender, ExecutedRoutedEventArgs args)
+        {
+            simplified = false;
+            Opacity = 1;
+            AppBarRow.Height = new GridLength(30);
+            AppBar.Visibility = Visibility.Visible;
+            textBlock.Margin = new Thickness(10);
+        }
+
+        public void OpUp(object sender, ExecutedRoutedEventArgs args)
+        {
+            opacity = Math.Min(opacity + 0.1, 1);
+            if (simplified)
+                Opacity = opacity;
+        }
+
+        public void OpDown(object sender, ExecutedRoutedEventArgs args)
+        {
+            opacity = Math.Max(opacity - 0.1, 0.1);
+            if (simplified)
+                Opacity = opacity;
+        }
+
+        public void PinWindow(object sender, ExecutedRoutedEventArgs args)
+        {
+            Topmost = true;
+            PinIndicator.Visibility = Visibility.Visible;
+        }
+
+        public void UnpinWindow(object sender, ExecutedRoutedEventArgs args)
+        {
+            Topmost = false;
+            PinIndicator.Visibility = Visibility.Collapsed;
+        }
+
+        public void Find(string regex, bool caseSensitive)
+        {
+            Regex reg = new Regex(regex, caseSensitive?RegexOptions.None:RegexOptions.IgnoreCase);
+            var doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
+            var match = reg.Match(doc.Text);
+            textBlock.CaretPosition = textBlock.CaretPosition.GetPositionAtOffset(match.Index + match.Length);
+            textBlock.Focus();
+        }
+
+        public void ReplaceNext(string regex, string with, bool caseSensitive)
+        {
+            Regex reg = new Regex(regex, caseSensitive?RegexOptions.None:RegexOptions.IgnoreCase);
+            var doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
+            var match = reg.Match(doc.Text);
+            textBlock.CaretPosition = textBlock.CaretPosition.GetPositionAtOffset(match.Index);
+            textBlock.CaretPosition.DeleteTextInRun(match.Length);
+            textBlock.CaretPosition.InsertTextInRun(with);
+            textBlock.Focus();
+        }
+
+        public void ReplaceAll(string regex, string with, bool caseSensitive)
+        {
+            Regex reg = new Regex(regex, caseSensitive ? RegexOptions.None : RegexOptions.IgnoreCase);
+            Match match;
+            var doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
+            while ((match = reg.Match(doc.Text)).Success)
+            {
+                textBlock.CaretPosition = textBlock.CaretPosition.GetPositionAtOffset(match.Index);
+                textBlock.CaretPosition.DeleteTextInRun(match.Length);
+                textBlock.CaretPosition.InsertTextInRun(with);
+                doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
+            }
+            textBlock.Focus();
         }
 
         public void SaveFile(object sender, ExecutedRoutedEventArgs args)
@@ -201,7 +334,7 @@ namespace TextEdit
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
                 e.Handled = true;
-                textBlock.FontSize = Math.Clamp(textBlock.FontSize + e.Delta / 15, 7, 50);
+                textBlock.FontSize = Math.Clamp(textBlock.FontSize + 4*Math.Sign(e.Delta), 6, 78);
             }
         }
 
@@ -254,6 +387,66 @@ namespace TextEdit
         private void InsertAndMove(string text)
         {
             textBlock.CaretPosition = InsertAndMove(text, textBlock.CaretPosition);
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void RestoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Maximized;
+        }
+
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void Help(object sender, ExecutedRoutedEventArgs e)
+        {
+            textBlock.Document = new FlowDocument(new Paragraph(new Run(File.ReadAllText(HelpFilePath))));
+            isSaved = true;
+        }
+
+        private void MoveRight(object sender, ExecutedRoutedEventArgs e)
+        {
+            Left = Math.Min(Left + (SystemParameters.WorkArea.Width - Width) / 20, SystemParameters.WorkArea.Right - Width);
+        }
+        private void MoveDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            Top = Math.Min(Top + (SystemParameters.WorkArea.Height - Height) / 20, SystemParameters.WorkArea.Bottom - Height);
+        }
+        private void MoveLeft(object sender, ExecutedRoutedEventArgs e)
+        {
+            Left = Math.Max(Left - (SystemParameters.WorkArea.Width - Width) / 20, 0);
+        }
+        private void MoveUp(object sender, ExecutedRoutedEventArgs e)
+        {
+            Top = Math.Max(Top - (SystemParameters.WorkArea.Height - Height) / 20, 0);
+        }
+
+        private void PushLeft(object sender, ExecutedRoutedEventArgs e)
+        {
+            Left = 0;
+        }
+        private void PushUp(object sender, ExecutedRoutedEventArgs e)
+        {
+            Top = 0;
+        }
+        private void PushRight(object sender, ExecutedRoutedEventArgs e)
+        {
+            Left = SystemParameters.WorkArea.Right - Width;
+        }
+        private void PushDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            Top = SystemParameters.WorkArea.Bottom - Height;
         }
     }
 }

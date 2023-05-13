@@ -7,15 +7,34 @@
         x:Name="mainWindow"
         mc:Ignorable="d"
         Title="TextEdit" Height="450" Width="800"
-        Style="{DynamicResource WindowStyle}">
+        Style="{DynamicResource WindowStyle}"
+        AllowsTransparency="True"
+        WindowStyle="None">
     <Window.CommandBindings>
         <CommandBinding Command="local:Commands.Save" Executed="SaveFile"/>
         <CommandBinding Command="local:Commands.SaveAs" Executed="SaveFileAs"/>
         <CommandBinding Command="local:Commands.New" Executed="NewFile"/>
         <CommandBinding Command="local:Commands.Open" Executed="OpenFile"/>
+        <CommandBinding Command="local:Commands.Help" Executed="Help"/>
         <CommandBinding Command="local:Commands.Exit" Executed="Exit"/>
         <CommandBinding Command="local:Commands.Duplicate" Executed="Duplicate"/>
         <CommandBinding Command="local:Commands.Reload" Executed="Reload"/>
+        <CommandBinding Command="local:Commands.Find" Executed="Find"/>
+        <CommandBinding Command="local:Commands.Replace" Executed="Replace"/>
+        <CommandBinding Command="local:Commands.PinWindow" Executed="PinWindow"/>
+        <CommandBinding Command="local:Commands.UnpinWindow" Executed="UnpinWindow"/>
+        <CommandBinding Command="local:Commands.Simplify" Executed="Simplify"/>
+        <CommandBinding Command="local:Commands.Unsimplify" Executed="Unsimplify"/>
+        <CommandBinding Command="local:Commands.OpacityUp" Executed="OpUp"/>
+        <CommandBinding Command="local:Commands.OpacityDown" Executed="OpDown"/>
+        <CommandBinding Command="local:Commands.MoveLeft" Executed="MoveLeft"/>
+        <CommandBinding Command="local:Commands.MoveUp" Executed="MoveUp"/>
+        <CommandBinding Command="local:Commands.MoveRight" Executed="MoveRight"/>
+        <CommandBinding Command="local:Commands.MoveDown" Executed="MoveDown"/>
+        <CommandBinding Command="local:Commands.PushLeft" Executed="PushLeft"/>
+        <CommandBinding Command="local:Commands.PushUp" Executed="PushUp"/>
+        <CommandBinding Command="local:Commands.PushRight" Executed="PushRight"/>
+        <CommandBinding Command="local:Commands.PushDown" Executed="PushDown"/>
     </Window.CommandBindings>
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"/>
@@ -41,15 +60,17 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition x:Name="AppBarRow" Height="30"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid HorizontalAlignment="Stretch"
+        <Grid x:Name="AppBar" HorizontalAlignment="Stretch"
                     Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Menu IsMainMenu="true" Grid.Column="0" FontSize="15" Style="{DynamicResource MenuStyle}" HorizontalAlignment="Left">
@@ -61,6 +82,7 @@
                     <MenuItem Header="Save as" Command="local:Commands.SaveAs"/>
                     <MenuItem Header="Save" Command="local:Commands.Save"/>
                     <Separator Margin="5"/>
+                    <MenuItem Header="Help" Command="local:Commands.Help"/>
                     <MenuItem Header="Exit" Command="local:Commands.Exit"/>
                 </MenuItem>
                 <MenuItem Header="Edit">
@@ -75,6 +97,16 @@
                     <MenuItem Header="Find" Command="local:Commands.Find"/>
                     <MenuItem Header="Replace" Command="local:Commands.Replace"/>
                 </MenuItem>
+                <MenuItem Header="View">
+                    <MenuItem Header="Pin window" Command="local:Commands.PinWindow"/>
+                    <MenuItem Header="Unpin window" Command="local:Commands.UnpinWindow"/>
+                    <Separator Margin="5"/>
+                    <MenuItem Header="Simplify" Command="local:Commands.Simplify"/>
+                    <MenuItem Header="Unsimplify" Command="local:Commands.Unsimplify"/>
+                    <Separator Margin="5"/>
+                    <MenuItem Header="Opacity+" Command="local:Commands.OpacityUp"/>
+                    <MenuItem Header="Opacity-" Command="local:Commands.OpacityDown"/>
+                </MenuItem>
             </Menu>
             <Border Margin="5" CornerRadius="3" Grid.Column="1" BorderThickness="0" Background="{DynamicResource LowlightBrush}">
                 <TextBlock FontSize="15"
@@ -84,12 +116,14 @@
                        MouseDown="TitleBar_MouseDown"
                        Margin="20 0 0 0" x:Name="fileNameHeader"/>
             </Border>
-                
-            <StackPanel Grid.Column="2" VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="&#xE949;" Style="{StaticResource CaptionButton}"/>
-                <Button Content="&#xE739;" x:Name="MaximizeButton" Style="{StaticResource CaptionButton}"/>
-                <Button Content="&#xE923;" x:Name="RestoreButton" Visibility="Collapsed" Style="{StaticResource CaptionButton}"/>
-                <Button Content="&#xE106;" Style="{StaticResource CaptionButton}"/>
+            <TextBlock Grid.Column="2" x:Name="PinIndicator" Text="&#xe840;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="20" Visibility="Collapsed"/>
+            <Expander x:Name="SarExp" Collapsed="SarExp_Collapsed" Expanded="Expander_Expanded" VerticalAlignment="Center"
+                      Grid.Column="3" Header="&#xE721;" Foreground="{DynamicResource ForegroundColor}" FontSize="15" FontFamily="Segoe MDL2 Assets"/>
+            <StackPanel Grid.Column="4" VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="&#xE949;" Click="MinimizeWindow" Style="{StaticResource CaptionButton}"/>
+                <Button Content="&#xE739;" Click="MaximizeButton_Click" x:Name="MaximizeButton" Style="{StaticResource CaptionButton}"/>
+                <Button Content="&#xE923;" Click="RestoreButton_Click" x:Name="RestoreButton" Visibility="Collapsed" Style="{StaticResource CaptionButton}"/>
+                <Button Content="&#xE106;" Click="CloseWindow" Style="{StaticResource CaptionButton}"/>
             </StackPanel>
         </Grid>
         <Separator Grid.Row="1" Style="{DynamicResource LowSeparator}"/>

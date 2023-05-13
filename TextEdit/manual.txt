@@ -1,0 +1,23 @@
+﻿Welcome to TextEdit manual!
+1. File manipulation
+TextEdit UI works with rich text, but right now it can only work with plain text files. So everything you've done outside of plain text format won't be saved.
+To start work with file you can either create empty file by File -> New, open existing file by File -> Open. If you want to reload file, you can use File -> Reopen.
+Once you have set file path you can quickly save your file by File -> Save (Tip: You can press Ctrl+S). To set file path you can either open file, or use File -> Save as.
+
+2. Text editing
+Text editing is pretty simple. To scale text you can use Ctrl + MouseWheelUp or Ctrl + MouseWheelDown.
+By the default, by pressing TAB TextEdit inserts 4 spaces at caret position.
+
+3. Text searching and replacing
+To search and replace something in text you should use S&R menu. To open it click on search symbol, situated at the left of minimize button, or go Edit -> Find, or Edit -> Replace.
+Text searching is powered by System.Text.RegularExpressions. For quick manual see: https://learn.microsoft.com/ru-ru/dotnet/standard/base-types/regular-expressions.
+To search through text just put the thing you want to find into the search field. By pressing "Search button" program will move your caret right after found text instance.
+If you want to replace found match with some other string, put the string value into "Replace" field and then press either "Replace next" or "Replace all", to replace one or all following matches.
+You can set case sensitivity by toggling matching button.
+
+4. Window view manipulations
+To move window by 1/20 of available screen space, press either Alt + Up, Alt + Right, Alt + Down, Alt + Left.
+To push window to the edge of available screen space, press either Shift + Alt + Up, Shift + Alt + Right, Shift + Alt + Down, Shift + Alt + Left.
+You can pin window, so it won't be covered by other windows by View -> Pin window, or unpin by View -> Unpin window.
+Also you can simplify window and make it half-transparent by going to View -> Simplify or pressing Shift + Esc. To return back to common perspective press Esc.
+To increase or decrease simplified window opacity use Alt + OemPlus or Alt + OemMinus.
