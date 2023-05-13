@@ -4,25 +4,104 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TextEdit"
+        x:Name="mainWindow"
         mc:Ignorable="d"
-        Title="TextEdit" Height="450" Width="800">
+        Title="TextEdit" Height="450" Width="800"
+        Style="{DynamicResource WindowStyle}">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:Commands.Save" Executed="SaveFile"/>
+        <CommandBinding Command="local:Commands.SaveAs" Executed="SaveFileAs"/>
+        <CommandBinding Command="local:Commands.New" Executed="NewFile"/>
+        <CommandBinding Command="local:Commands.Open" Executed="OpenFile"/>
+        <CommandBinding Command="local:Commands.Exit" Executed="Exit"/>
+        <CommandBinding Command="local:Commands.Duplicate" Executed="Duplicate"/>
+    </Window.CommandBindings>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
+            <StackPanel Margin="-20,0,0,0" Background="White"/>
+        </ItemsPanelTemplate>
+        <Style x:Key="CaptionButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
+                            <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="10" 
+                                      Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        <Menu VerticalAlignment="Top" FontSize="15">
-            <Menu.Resources>
-                <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
-                    <StackPanel Margin="-30,0,0,0" Background="White"/>
-                </ItemsPanelTemplate>
-                <Style TargetType="{x:Type MenuItem}">
-                    <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate}"/>
-                </Style>
-            </Menu.Resources>
-            <MenuItem Header="File">
-                <MenuItem Header="New"/>
-                <MenuItem Header="Open" />
-                <Separator Margin="5"/>
-                <MenuItem Header="Save as"/>
-                <MenuItem Header="Save"/>
-            </MenuItem>
-        </Menu>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Stretch"
+                    Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Menu IsMainMenu="true" Grid.Column="0" FontSize="15" Style="{DynamicResource MenuStyle}" HorizontalAlignment="Left">
+                <MenuItem Header="File">
+                    <MenuItem Header="Open" Command="local:Commands.Open"/>
+                    <MenuItem Header="New" Command="local:Commands.New"/>
+                    <Separator Margin="5"/>
+                    <MenuItem Header="Save as" Command="local:Commands.SaveAs"/>
+                    <MenuItem Header="Save" Command="local:Commands.Save"/>
+                    <Separator Margin="5"/>
+                    <MenuItem Header="Exit" Command="local:Commands.Exit"/>
+                </MenuItem>
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Undo" Command="ApplicationCommands.Undo"/>
+                    <MenuItem Header="Redo" Command="ApplicationCommands.Redo"/>
+                    <Separator Margin="5"/>
+                    <MenuItem Header="Copy" Command="ApplicationCommands.Copy"/>
+                    <MenuItem Header="Cut" Command="ApplicationCommands.Cut"/>
+                    <MenuItem Header="Paste" Command="ApplicationCommands.Paste"/>
+                    <MenuItem Header="Duplicate" Command="local:Commands.Duplicate"/>
+                    <Separator Margin="5"/>
+                    <MenuItem Header="Find" Command="local:Commands.Find"/>
+                    <MenuItem Header="Replace" Command="local:Commands.Replace"/>
+                </MenuItem>
+            </Menu>
+            <Border Margin="5" CornerRadius="3" Grid.Column="1" BorderThickness="0" Background="{DynamicResource LowlightBrush}">
+                <TextBlock FontSize="15"
+                           DataContext=""
+                       HorizontalAlignment="Stretch" 
+                       VerticalAlignment="Center"
+                       MouseDown="TitleBar_MouseDown"
+                       Margin="20 0 0 0" x:Name="fileNameHeader"/>
+            </Border>
+                
+            <StackPanel Grid.Column="2" VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="&#xE949;" Style="{StaticResource CaptionButton}"/>
+                <Button Content="&#xE739;" x:Name="MaximizeButton" Style="{StaticResource CaptionButton}"/>
+                <Button Content="&#xE923;" x:Name="RestoreButton" Visibility="Collapsed" Style="{StaticResource CaptionButton}"/>
+                <Button Content="&#xE106;" Style="{StaticResource CaptionButton}"/>
+            </StackPanel>
+        </Grid>
+        <Separator Grid.Row="1" Style="{DynamicResource LowSeparator}"/>
+        <RichTextBox FontFamily="Cascadia Mono" FontSize="13"
+                     x:Name="textBlock"
+                     Margin="10" Grid.Row="2"
+                     VerticalAlignment="Stretch"
+                     PreviewMouseWheel="DataGrid_PreviewMouseWheel"
+                     TextChanged="TextChanged"
+                     PreviewKeyDown="TextPreviewKeyDown"
+                     HorizontalScrollBarVisibility="Auto"
+                     VerticalScrollBarVisibility="Auto"
+                     AcceptsTab="True"
+                     AcceptsReturn="True"
+                     Style="{DynamicResource RichTextBoxStyle}"/>
     </Grid>
 </Window>
