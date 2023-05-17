@@ -354,7 +354,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TextEdit"
         "ProductCode" = "8:{40AE7468-C1D9-421D-A0C5-67AAF1EA22CC}"
-        "PackageCode" = "8:{7FAD33C0-B514-469C-A7CB-CAAF51C69368}"
+        "PackageCode" = "8:{46A9370B-1DC9-47F4-923C-FAF9E78FFB54}"
         "UpgradeCode" = "8:{08326A68-460A-4133-B684-59913824E1BC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -485,7 +485,7 @@
             "Target" = "8:_79CC769A2BFC4E73B3556AB560952C68"
             "Folder" = "8:_D9C5A386B2FF45B68B5FFB1683D68D23"
             "WorkingFolder" = "8:_5B9C13E7EB6049E7A2000FD9D9CDC6BF"
-            "Icon" = "8:"
+            "Icon" = "8:_B667BC86DCC44605A3388CB22EBA59AB"
             "Feature" = "8:"
             }
         }
