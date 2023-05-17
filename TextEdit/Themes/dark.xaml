@@ -2,7 +2,7 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:lib="clr-namespace:TextLib;assembly=TextLib"
            Name="Dark"
-           Author="Default>
+           Author="Default">
     <ResourceDictionary>
         <SolidColorBrush x:Key="TextFieldColor" Color="#202020"/>
         <SolidColorBrush x:Key="ToggleChecked" Color="#252525"/>

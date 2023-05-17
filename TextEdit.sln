@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextEdit", "TextEdit\TextEd
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{5D6E7B32-D304-4731-A348-334D5A572566}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextLib", "TextLib\TextLib.csproj", "{79E0B251-9F5A-4981-B490-BC45DFE06819}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextLib", "TextLib\TextLib.csproj", "{79E0B251-9F5A-4981-B490-BC45DFE06819}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
