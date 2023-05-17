@@ -8,6 +8,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x86</Platforms>
     <StartupObject>TextEdit.App</StartupObject>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +16,43 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TextLib\TextLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Themes\\*.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Themes\dark_contrast.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Themes\custom.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+    <Content Update="Themes\dark_contrast.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Update="manual.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

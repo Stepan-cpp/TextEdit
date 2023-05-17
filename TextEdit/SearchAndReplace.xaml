@@ -12,7 +12,7 @@
         ResizeMode="NoResize"
         Style="{DynamicResource WindowStyle}"
         BorderThickness="2"
-        BorderBrush="{DynamicResource LowlightBrush}">
+        BorderBrush="{DynamicResource Lowlight}">
     <Window.Resources>
         <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
         <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
@@ -28,11 +28,11 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Background="{DynamicResource LowlightBackground}">
+        <DockPanel Grid.Row="0">
             <TextBlock FontSize="15" DockPanel.Dock="Left">Search and replace</TextBlock>
-            <Button Click="Button_Click" Style="{DynamicResource ButtonStyle}" FontSize="20" Background="Transparent" Foreground="{DynamicResource ForegroundColor}" BorderThickness="0" Margin="30 0 0 0" FontFamily="Segoe MDL2 Assets" Content="&#xE8BB;" DockPanel.Dock="Right"/>
+            <Button Click="Button_Click" Style="{DynamicResource ButtonStyle}" FontSize="10" Background="Transparent" BorderThickness="0" Margin="30 0 0 0" FontFamily="Segoe MDL2 Assets" Content="&#xE8BB;" DockPanel.Dock="Right"/>
         </DockPanel>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Background="{DynamicResource LowlightBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -46,7 +46,7 @@
             <TextBlock VerticalAlignment="Center" FontSize="13" Grid.Row="1" Text="Replace:" Margin="0 0 10 0"/>
             <TextBox x:Name="replace" Margin="5" FontSize="13" Style="{DynamicResource TextBoxStyle}" Grid.Row="1" Grid.Column="1"/>
         </Grid>
-        <StackPanel Orientation="Horizontal" Grid.Row="2">
+        <StackPanel Margin="0 -1 0 0" Orientation="Horizontal" Grid.Row="2" Background="{DynamicResource LowlightBackground}">
             <Button Click="Button_Click_1" Style="{DynamicResource ButtonStyle}" ToolTip="Search" Grid.Column="0" Content="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="15" HorizontalAlignment="Center" Margin="2"/>
             <Button Click="Button_Click_2" Style="{DynamicResource ButtonStyle}" ToolTip="Replace next" Grid.Column="0" Content="&#xE9AC;" FontFamily="Segoe MDL2 Assets" FontSize="15" HorizontalAlignment="Center" Margin="2"/>
             <Button Click="Button_Click_3" Style="{DynamicResource ButtonStyle}" ToolTip="Replace all" Grid.Column="0" Content="&#xEB9D;" FontFamily="Segoe MDL2 Assets" FontSize="15" HorizontalAlignment="Center" Margin="2"/>

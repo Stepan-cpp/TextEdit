@@ -1,0 +1,18 @@
+﻿<lib:Theme xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:lib="clr-namespace:TextLib;assembly=TextLib"
+           Name="Light"
+           Author="Default>
+    <ResourceDictionary>
+        <SolidColorBrush x:Key="TextFieldColor" Color="White"/>
+        <SolidColorBrush x:Key="ToggleChecked" Color="LightGray"/>
+        <SolidColorBrush x:Key="Foreground" Color="Black"/>
+        <SolidColorBrush x:Key="ForegroundDisabled" Color="Gray"/>
+        <SolidColorBrush x:Key="Background" Color="#CFCFCF"/>
+        <SolidColorBrush x:Key="Lowlight" Color="Gray"/>
+        <SolidColorBrush x:Key="LowlightBackground" Color="White"/>
+        <SolidColorBrush x:Key="BorderHighlight" Color="#303030"/>
+        <SolidColorBrush x:Key="MouseOver" Color="LightGray"/>
+    </ResourceDictionary>
+    
+</lib:Theme>

@@ -13,13 +13,6 @@
         ResizeMode="NoResize"
         BorderThickness="2"
         BorderBrush="{DynamicResource LowlightBrush}">
-    <Window.Resources>
-        <Style TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Width" Value="80"/>
-            <Setter Property="FontSize" Value="15"/>
-        </Style>
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -27,9 +20,9 @@
         </Grid.RowDefinitions>
         <TextBlock FontSize="15" Grid.Row="0" Text="Save the file before exiting?" TextAlignment="Center"/>
         <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
-            <Button IsDefault="True" Grid.Row="1" Content="Save" Click="Do_Click"/>
-            <Button Content="Don't save" Click="Donot_Click"/>
-            <Button IsCancel="True" Content="Cancel"/>
+            <Button Style="{DynamicResource ButtonStyle}" IsDefault="True" Grid.Row="1" Content="Save" Click="Do_Click" Margin="5" Width="80" FontSize="15"/>
+            <Button Style="{DynamicResource ButtonStyle}" Content="Don't save" Click="Donot_Click" Margin="5" Width="80" FontSize="15"/>
+            <Button Style="{DynamicResource ButtonStyle}" IsCancel="True" Content="Cancel" Margin="5" Width="80" FontSize="15"/>
         </WrapPanel>
     </Grid>
 </Window>

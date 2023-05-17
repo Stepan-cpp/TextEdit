@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -16,8 +17,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 using System.Windows.Shell;
+using TextEdit.Properties;
+using TextLib;
 
 namespace TextEdit
 {
@@ -26,7 +30,9 @@ namespace TextEdit
         int indent = 4;
         double opacity = 0.6;
 
-        public static string FileToOpen = "";
+        internal static string FileToOpen = "";
+
+        public ObservableCollection<Theme> Themes = new();
 
         private const string HelpFilePath = "manual.txt";
 
@@ -62,20 +68,35 @@ namespace TextEdit
         {
             ApplicationCommands.Redo.InputGestures.Clear();
             ApplicationCommands.Redo.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift));
-            ThemeChange("DarkTheme");
-            InitializeComponent();
-            StateChanged += MainWindowStateChangeRaised;
-            Closing += MainWindow_Closing;
-            SizeChanged += MainWindow_SizeChanged;
-            LocationChanged += MainWindow_LocationChanged;
+            ThemeLoad((string) Settings.Default["Theme"]);
+            ThemeChange(Themes[0]);
+            StateChanged += MainWindowStateChangeRaised!;
+            Closing += MainWindow_Closing!;
+            SizeChanged += MainWindow_SizeChanged!;
+            LocationChanged += MainWindow_LocationChanged!;
             Loaded += MainWindow_Loaded;
+            InitializeComponent();
+            Themes.Clear();
+            ThemesMenu.ItemsSource = Themes;
+            RefreshThemes();
+            
+
             if (FileToOpen.Length > 0)
             {
                 FilePath = FileToOpen;
-                Reload(default, default);
+                Reload(default!, default!);
             }
             sar = new SearchAndReplace();
             UpdatePosition();
+        }
+
+        private void RefreshThemes(object sender = null, RoutedEventArgs e = null)
+        {
+            Themes.Clear();
+            foreach (var file in Directory.GetFiles("Themes", "*.xaml"))
+            {
+                LoadThemeByPath(new Uri(file, UriKind.Relative));
+            }
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -123,11 +144,24 @@ namespace TextEdit
             }
         }
 
-        private void ThemeChange(string theme)
+        private void ThemeChange(Theme theme)
         {
-            var uri = new Uri(theme + ".xaml", UriKind.Relative);
-            ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
-            App.Current.Resources.MergedDictionaries.Add(resourceDict);
+            App.Current.Resources.MergedDictionaries.Clear();
+            App.Current.Resources.MergedDictionaries.Add(theme.Resources);
+            Properties.Settings.Default["Theme"] = theme.Name;
+        }
+
+        private void ThemeLoad(string themeName)
+        {
+            LoadThemeByPath(new Uri("Themes\\" + themeName.ToLower() + ".xaml", UriKind.Relative));
+        }
+
+        private void LoadThemeByPath(Uri uri)
+        {
+            var info = Application.GetRemoteStream(uri);
+            var reader = new System.Windows.Markup.XamlReader();
+            Theme theme = (Theme)reader.LoadAsync(info.Stream);
+            Themes.Add(theme);
         }
 
         public void NewFile(object sender, ExecutedRoutedEventArgs args)
@@ -162,6 +196,15 @@ namespace TextEdit
         public void Find(object sender, ExecutedRoutedEventArgs args)
         {
             SarExp.IsExpanded = true;
+        }
+
+        public void Find(string regex, bool caseSensitive)
+        {
+            Regex reg = new Regex(regex, caseSensitive ? RegexOptions.None : RegexOptions.IgnoreCase);
+            var doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
+            var match = reg.Match(doc.Text);
+            textBlock.CaretPosition = textBlock.CaretPosition.GetPositionAtOffset(match.Index + match.Length);
+            textBlock.Focus();
         }
 
         public void Replace(object sender, ExecutedRoutedEventArgs args)
@@ -215,38 +258,34 @@ namespace TextEdit
             PinIndicator.Visibility = Visibility.Collapsed;
         }
 
-        public void Find(string regex, bool caseSensitive)
-        {
-            Regex reg = new Regex(regex, caseSensitive?RegexOptions.None:RegexOptions.IgnoreCase);
-            var doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
-            var match = reg.Match(doc.Text);
-            textBlock.CaretPosition = textBlock.CaretPosition.GetPositionAtOffset(match.Index + match.Length);
-            textBlock.Focus();
-        }
-
         public void ReplaceNext(string regex, string with, bool caseSensitive)
         {
+            textBlock.BeginChange();
             Regex reg = new Regex(regex, caseSensitive?RegexOptions.None:RegexOptions.IgnoreCase);
             var doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
             var match = reg.Match(doc.Text);
             textBlock.CaretPosition = textBlock.CaretPosition.GetPositionAtOffset(match.Index);
             textBlock.CaretPosition.DeleteTextInRun(match.Length);
             textBlock.CaretPosition.InsertTextInRun(with);
+            textBlock.EndChange();
             textBlock.Focus();
         }
 
         public void ReplaceAll(string regex, string with, bool caseSensitive)
         {
+            textBlock.BeginChange();
             Regex reg = new Regex(regex, caseSensitive ? RegexOptions.None : RegexOptions.IgnoreCase);
-            Match match;
             var doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
-            while ((match = reg.Match(doc.Text)).Success)
+            var match = reg.Match(doc.Text);
+            while (match.Success && match.Length > 0)
             {
                 textBlock.CaretPosition = textBlock.CaretPosition.GetPositionAtOffset(match.Index);
                 textBlock.CaretPosition.DeleteTextInRun(match.Length);
-                textBlock.CaretPosition.InsertTextInRun(with);
+                InsertAndMove(with);
                 doc = new TextRange(textBlock.CaretPosition, textBlock.Document.ContentEnd);
+                match = reg.Match(doc.Text);
             }
+            textBlock.EndChange();
             textBlock.Focus();
         }
 
@@ -276,7 +315,10 @@ namespace TextEdit
         public void Exit(object sender, ExecutedRoutedEventArgs args)
         {
             if (ShowSaveDialog())
+            {
+                Settings.Default.Save();
                 Close();
+            }
         }
 
         public void Duplicate(object sender, ExecutedRoutedEventArgs args)
@@ -285,14 +327,18 @@ namespace TextEdit
             {
                 var start = textBlock.CaretPosition.GetLineStartPosition(0).GetPositionAtOffset(1);
                 var text = start.GetTextInRun(LogicalDirection.Forward);
+                textBlock.BeginChange();
                 start.InsertTextInRun(text);
                 start.InsertLineBreak();
+                textBlock.EndChange();
             }
             else
             {
+                textBlock.BeginChange();
                 var start = textBlock.Selection.Start;
                 var text = textBlock.Selection.Text;
                 start.InsertTextInRun(text);
+                textBlock.EndChange();
             }
         }
 
@@ -314,7 +360,7 @@ namespace TextEdit
                 {
                     if (window.DoSave)
                     {
-                        SaveFile(default, default);
+                        SaveFile(default!, default!);
                     }
                     return true;
                 }
@@ -447,6 +493,11 @@ namespace TextEdit
         private void PushDown(object sender, ExecutedRoutedEventArgs e)
         {
             Top = SystemParameters.WorkArea.Bottom - Height;
+        }
+
+        private void ThemeChoiced(object sender, ExecutedRoutedEventArgs e)
+        {
+            ThemeChange(Themes.First(c => c.Name == (string) e.Parameter));
         }
     }
 }

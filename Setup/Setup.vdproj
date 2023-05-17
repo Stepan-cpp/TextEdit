@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0784BFBD0206417BA77AE3B65CEDE7C5"
+        "MsmKey" = "8:_2C253A647F194F78A602687A9D117E39"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -27,7 +27,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AA1F16B7AF8F44C5BCB2B5C023C3A16F"
+        "MsmKey" = "8:_79CC769A2BFC4E73B3556AB560952C68"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8DEBCE11797241AD972F1D300D3B7C33"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8E9502DAA1E7429A8D0796DF5E5D2A24"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -62,6 +74,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -126,12 +146,12 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0784BFBD0206417BA77AE3B65CEDE7C5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2C253A647F194F78A602687A9D117E39"
             {
-            "SourcePath" = "8:..\\TextEdit\\bin\\Release\\net7.0-windows\\TextEdit.exe"
-            "TargetName" = "8:TextEdit.exe"
+            "SourcePath" = "8:..\\TextEdit\\Themes\\\\light.xaml"
+            "TargetName" = "8:light.xaml"
             "Tag" = "8:"
-            "Folder" = "8:_5B9C13E7EB6049E7A2000FD9D9CDC6BF"
+            "Folder" = "8:_A2E87D15A7024146952973E034C334CD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -152,6 +172,26 @@
             "TargetName" = "8:manual.txt"
             "Tag" = "8:"
             "Folder" = "8:_5B9C13E7EB6049E7A2000FD9D9CDC6BF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8E9502DAA1E7429A8D0796DF5E5D2A24"
+            {
+            "SourcePath" = "8:..\\TextEdit\\Themes\\\\dark.xaml"
+            "TargetName" = "8:dark.xaml"
+            "Tag" = "8:"
+            "Folder" = "8:_A2E87D15A7024146952973E034C334CD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -199,7 +239,7 @@
             "IconIndex" = "3:0"
                 "Command"
                 {
-                "Command" = "8:_0784BFBD0206417BA77AE3B65CEDE7C5"
+                "Command" = "8:_79CC769A2BFC4E73B3556AB560952C68"
                 }
                 "Verbs"
                 {
@@ -252,12 +292,23 @@
             {
             "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_A2E87D15A7024146952973E034C334CD"
+                    {
+                    "Name" = "8:Themes"
+                    "AlwaysCreate" = "11:TRUE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_930A8063CEF14CC3BE51A7190478ABBF"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
         }
@@ -277,7 +328,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TextEdit"
         "ProductCode" = "8:{40AE7468-C1D9-421D-A0C5-67AAF1EA22CC}"
-        "PackageCode" = "8:{7DDC5E2B-F9E6-49F3-A106-30E935D48037}"
+        "PackageCode" = "8:{B541BE7F-7DC4-45D4-9FDC-3F1811EA9665}"
         "UpgradeCode" = "8:{08326A68-460A-4133-B684-59913824E1BC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -300,7 +351,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:https://github.com/Stepan-cpp"
+        "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
@@ -397,7 +448,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A249E4EB83E9435BB54F97B5D2CCE2EE"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3EE8C54B70A444F6A0E7CBB31C4F76E0"
             {
             "Name" = "8:TextEdit"
             "Arguments" = "8:"
@@ -405,10 +456,10 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_0784BFBD0206417BA77AE3B65CEDE7C5"
+            "Target" = "8:_79CC769A2BFC4E73B3556AB560952C68"
             "Folder" = "8:_D9C5A386B2FF45B68B5FFB1683D68D23"
             "WorkingFolder" = "8:_5B9C13E7EB6049E7A2000FD9D9CDC6BF"
-            "Icon" = "8:_B667BC86DCC44605A3388CB22EBA59AB"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
         }
@@ -810,7 +861,35 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AA1F16B7AF8F44C5BCB2B5C023C3A16F"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_79CC769A2BFC4E73B3556AB560952C68"
+            {
+            "SourcePath" = "8:..\\TextEdit\\obj\\Release\\net7.0-windows\\apphost.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5B9C13E7EB6049E7A2000FD9D9CDC6BF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:PublishItems"
+            "OutputProjectGuid" = "8:{32015D04-A03A-4E81-B233-42FEF5E1D115}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8DEBCE11797241AD972F1D300D3B7C33"
             {
             "SourcePath" = "8:..\\TextEdit\\obj\\Release\\net7.0-windows\\TextEdit.dll"
             "TargetName" = "8:"

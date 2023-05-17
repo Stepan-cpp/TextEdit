@@ -35,6 +35,8 @@ namespace TextEdit
         public static RoutedCommand MoveRight { get; set; } = new RoutedCommand("Move right", typeof(MainWindow));
         public static RoutedCommand MoveDown { get; set; } = new RoutedCommand("Move down", typeof(MainWindow));
 
+        public static RoutedCommand ChangeTheme { get; set; } = new RoutedCommand("Change theme", typeof(MainWindow));
+
         static Commands()
         {
             New.InputGestures.Add(new KeyGesture(Key.N, ModifierKeys.Control));

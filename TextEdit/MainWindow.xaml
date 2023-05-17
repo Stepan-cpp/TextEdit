@@ -35,6 +35,7 @@
         <CommandBinding Command="local:Commands.PushUp" Executed="PushUp"/>
         <CommandBinding Command="local:Commands.PushRight" Executed="PushRight"/>
         <CommandBinding Command="local:Commands.PushDown" Executed="PushDown"/>
+        <CommandBinding Command="local:Commands.ChangeTheme" Executed="ThemeChoiced"/>
     </Window.CommandBindings>
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"/>
@@ -49,7 +50,7 @@
                     <ControlTemplate TargetType="Button">
                         <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
                             <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="10" 
-                                      Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      Foreground="{DynamicResource Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                       RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
                         </Grid>
                     </ControlTemplate>
@@ -107,8 +108,17 @@
                     <MenuItem Header="Opacity+" Command="local:Commands.OpacityUp"/>
                     <MenuItem Header="Opacity-" Command="local:Commands.OpacityDown"/>
                 </MenuItem>
+                <MenuItem Header="Themes" x:Name="ThemesMenu" SubmenuOpened="RefreshThemes">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding Name}"/>
+                            <Setter Property="Command" Value="local:Commands.ChangeTheme"/>
+                            <Setter Property="CommandParameter" Value="{Binding Name}"/>
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
             </Menu>
-            <Border Margin="5" CornerRadius="3" Grid.Column="1" BorderThickness="0" Background="{DynamicResource LowlightBrush}">
+            <Border Margin="5" Background="{DynamicResource LowlightBackground}" CornerRadius="3" Grid.Column="1" BorderThickness="0">
                 <TextBlock FontSize="15"
                            DataContext=""
                        HorizontalAlignment="Stretch" 
@@ -118,7 +128,7 @@
             </Border>
             <TextBlock Grid.Column="2" x:Name="PinIndicator" Text="&#xe840;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="20" Visibility="Collapsed"/>
             <Expander x:Name="SarExp" Collapsed="SarExp_Collapsed" Expanded="Expander_Expanded" VerticalAlignment="Center"
-                      Grid.Column="3" Header="&#xE721;" Foreground="{DynamicResource ForegroundColor}" FontSize="15" FontFamily="Segoe MDL2 Assets"/>
+                      Grid.Column="3" Header="&#xE721;" FontSize="15" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource Foreground}"/>
             <StackPanel Grid.Column="4" VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="&#xE949;" Click="MinimizeWindow" Style="{StaticResource CaptionButton}"/>
                 <Button Content="&#xE739;" Click="MaximizeButton_Click" x:Name="MaximizeButton" Style="{StaticResource CaptionButton}"/>

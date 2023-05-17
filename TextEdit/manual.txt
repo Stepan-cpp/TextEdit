@@ -21,3 +21,6 @@ To push window to the edge of available screen space, press either Shift + Alt +
 You can pin window, so it won't be covered by other windows by View -> Pin window, or unpin by View -> Unpin window.
 Also you can simplify window and make it half-transparent by going to View -> Simplify or pressing Shift + Esc. To return back to common perspective press Esc.
 To increase or decrease simplified window opacity use Alt + OemPlus or Alt + OemMinus.
+
+5. Custom themes
+To create a custom theme copy one of theme files in <ApplicatonFolder>/Themes, rename it as you want. Then set authors name and name of theme, replace color values by your owns.
