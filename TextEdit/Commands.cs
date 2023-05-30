@@ -36,6 +36,7 @@ namespace TextEdit
         public static RoutedCommand MoveDown { get; set; } = new RoutedCommand("Move down", typeof(MainWindow));
 
         public static RoutedCommand ChangeTheme { get; set; } = new RoutedCommand("Change theme", typeof(MainWindow));
+        public static RoutedCommand TextScreenshot { get; set; } = new RoutedCommand("Make text screenshot", typeof(MainWindow));
 
         static Commands()
         {
@@ -63,6 +64,8 @@ namespace TextEdit
             PushUp.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Alt | ModifierKeys.Shift));
             PushRight.InputGestures.Add(new KeyGesture(Key.Right, ModifierKeys.Alt | ModifierKeys.Shift));
             PushDown.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Alt | ModifierKeys.Shift));
+
+            TextScreenshot.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Alt));
         }
     }
 }

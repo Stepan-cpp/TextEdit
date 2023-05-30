@@ -13,6 +13,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		FileOpen|Any CPU = FileOpen|Any CPU
+		FileOpen|x86 = FileOpen|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -21,18 +23,27 @@ Global
 		{32015D04-A03A-4E81-B233-42FEF5E1D115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32015D04-A03A-4E81-B233-42FEF5E1D115}.Debug|x86.ActiveCfg = Debug|x86
 		{32015D04-A03A-4E81-B233-42FEF5E1D115}.Debug|x86.Build.0 = Debug|x86
+		{32015D04-A03A-4E81-B233-42FEF5E1D115}.FileOpen|Any CPU.ActiveCfg = Debug|Any CPU
+		{32015D04-A03A-4E81-B233-42FEF5E1D115}.FileOpen|x86.ActiveCfg = Release|x86
 		{32015D04-A03A-4E81-B233-42FEF5E1D115}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32015D04-A03A-4E81-B233-42FEF5E1D115}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32015D04-A03A-4E81-B233-42FEF5E1D115}.Release|x86.ActiveCfg = Release|x86
 		{32015D04-A03A-4E81-B233-42FEF5E1D115}.Release|x86.Build.0 = Release|x86
 		{5D6E7B32-D304-4731-A348-334D5A572566}.Debug|Any CPU.ActiveCfg = Debug
 		{5D6E7B32-D304-4731-A348-334D5A572566}.Debug|x86.ActiveCfg = Debug
+		{5D6E7B32-D304-4731-A348-334D5A572566}.FileOpen|Any CPU.ActiveCfg = Debug
+		{5D6E7B32-D304-4731-A348-334D5A572566}.FileOpen|x86.ActiveCfg = Release
+		{5D6E7B32-D304-4731-A348-334D5A572566}.FileOpen|x86.Build.0 = Release
 		{5D6E7B32-D304-4731-A348-334D5A572566}.Release|Any CPU.ActiveCfg = Release
 		{5D6E7B32-D304-4731-A348-334D5A572566}.Release|x86.ActiveCfg = Release
 		{79E0B251-9F5A-4981-B490-BC45DFE06819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{79E0B251-9F5A-4981-B490-BC45DFE06819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79E0B251-9F5A-4981-B490-BC45DFE06819}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{79E0B251-9F5A-4981-B490-BC45DFE06819}.Debug|x86.Build.0 = Debug|Any CPU
+		{79E0B251-9F5A-4981-B490-BC45DFE06819}.FileOpen|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E0B251-9F5A-4981-B490-BC45DFE06819}.FileOpen|Any CPU.Build.0 = Debug|Any CPU
+		{79E0B251-9F5A-4981-B490-BC45DFE06819}.FileOpen|x86.ActiveCfg = Release|Any CPU
+		{79E0B251-9F5A-4981-B490-BC45DFE06819}.FileOpen|x86.Build.0 = Release|Any CPU
 		{79E0B251-9F5A-4981-B490-BC45DFE06819}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79E0B251-9F5A-4981-B490-BC45DFE06819}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79E0B251-9F5A-4981-B490-BC45DFE06819}.Release|x86.ActiveCfg = Release|Any CPU

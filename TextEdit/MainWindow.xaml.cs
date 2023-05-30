@@ -1,10 +1,12 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.CSharp.RuntimeBinder;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -30,7 +32,9 @@ namespace TextEdit
         int indent = 4;
         double opacity = 0.6;
 
-        internal static string FileToOpen = "";
+        public static string FileToOpen = "";
+
+        private string SelfPath;
 
         public ObservableCollection<Theme> Themes = new();
 
@@ -66,36 +70,45 @@ namespace TextEdit
 
         public MainWindow()
         {
-            ApplicationCommands.Redo.InputGestures.Clear();
-            ApplicationCommands.Redo.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift));
-            ThemeLoad((string) Settings.Default["Theme"]);
-            ThemeChange(Themes[0]);
-            StateChanged += MainWindowStateChangeRaised!;
-            Closing += MainWindow_Closing!;
-            SizeChanged += MainWindow_SizeChanged!;
-            LocationChanged += MainWindow_LocationChanged!;
-            Loaded += MainWindow_Loaded;
-            InitializeComponent();
-            Themes.Clear();
-            ThemesMenu.ItemsSource = Themes;
-            RefreshThemes();
-            
-
-            if (FileToOpen.Length > 0)
+            try
             {
-                FilePath = FileToOpen;
-                Reload(default!, default!);
+                SelfPath = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName + '\\';
+                ApplicationCommands.Redo.InputGestures.Clear();
+                ApplicationCommands.Redo.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift));
+                ThemeLoad("dark");
+                ThemeChange(Themes[0], true);
+                StateChanged += MainWindowStateChangeRaised!;
+                Closing += MainWindow_Closing!;
+                SizeChanged += MainWindow_SizeChanged!;
+                LocationChanged += MainWindow_LocationChanged!;
+                Loaded += MainWindow_Loaded;
+                InitializeComponent();
+                Themes.Clear();
+                ThemesMenu.ItemsSource = Themes;
+                RefreshThemes();
+                ThemeChange(Themes.First(c => c.Name == Settings.Default.Theme));
+
+                sar = new SearchAndReplace();
+                UpdatePosition();
+
+                if (FileToOpen.Length > 0)
+                {
+                    FilePath = FileToOpen;
+                    Reload(default!, default!);
+                }
             }
-            sar = new SearchAndReplace();
-            UpdatePosition();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void RefreshThemes(object sender = null, RoutedEventArgs e = null)
         {
             Themes.Clear();
-            foreach (var file in Directory.GetFiles("Themes", "*.xaml"))
+            foreach (var file in Directory.GetFiles(SelfPath + "Themes", "*.xaml"))
             {
-                LoadThemeByPath(new Uri(file, UriKind.Relative));
+                LoadThemeByPath(file);
             }
         }
 
@@ -144,23 +157,24 @@ namespace TextEdit
             }
         }
 
-        private void ThemeChange(Theme theme)
+        private void ThemeChange(Theme theme, bool doNotSave = false)
         {
             App.Current.Resources.MergedDictionaries.Clear();
             App.Current.Resources.MergedDictionaries.Add(theme.Resources);
-            Properties.Settings.Default["Theme"] = theme.Name;
+            if (!doNotSave)
+                Settings.Default.Theme = theme.Name;
         }
 
         private void ThemeLoad(string themeName)
         {
-            LoadThemeByPath(new Uri("Themes\\" + themeName.ToLower() + ".xaml", UriKind.Relative));
+            LoadThemeByPath(SelfPath + "Themes\\" + themeName.ToLower() + ".xaml");
         }
 
-        private void LoadThemeByPath(Uri uri)
+        private void LoadThemeByPath(string filePath)
         {
-            var info = Application.GetRemoteStream(uri);
+            using var info = File.OpenRead(filePath);
             var reader = new System.Windows.Markup.XamlReader();
-            Theme theme = (Theme)reader.LoadAsync(info.Stream);
+            Theme theme = (Theme)reader.LoadAsync(info);
             Themes.Add(theme);
         }
 
@@ -344,6 +358,7 @@ namespace TextEdit
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
+            Settings.Default.Save();
             if (!ShowSaveDialog())
                 e.Cancel = true;
         }
@@ -498,6 +513,47 @@ namespace TextEdit
         private void ThemeChoiced(object sender, ExecutedRoutedEventArgs e)
         {
             ThemeChange(Themes.First(c => c.Name == (string) e.Parameter));
+        }
+
+        private void TextScreenshot(object sender, ExecutedRoutedEventArgs e)
+        {
+            BitmapSource image = FlowDocumentToBitmap(CloneDocument(textBlock.Document), new Size(textBlock.ActualWidth, textBlock.ActualHeight));
+            Clipboard.SetImage(image);
+        }
+
+        public static BitmapSource FlowDocumentToBitmap(FlowDocument document, Size size)
+        {
+            document.ColumnWidth = size.Width;
+
+            var paginator = ((IDocumentPaginatorSource)document).DocumentPaginator;
+            paginator.PageSize = size;
+
+            var visual = new DrawingVisual();
+            using (var drawingContext = visual.RenderOpen())
+            {
+                drawingContext.DrawRectangle((Brush) App.Current.Resources["TextFieldColor"], null, new Rect(size));
+            }
+            visual.Children.Add(paginator.GetPage(0).Visual);
+
+            var bitmap = new RenderTargetBitmap((int)size.Width, (int)size.Height,
+                                                96, 96, PixelFormats.Pbgra32);
+            bitmap.Render(visual);
+            return bitmap;
+        }
+
+        public static FlowDocument CloneDocument(FlowDocument document)
+        {
+            var copy = new FlowDocument();
+            var sourceRange = new TextRange(document.ContentStart, document.ContentEnd);
+            var targetRange = new TextRange(copy.ContentStart, copy.ContentEnd);
+
+            using (var stream = new MemoryStream())
+            {
+                sourceRange.Save(stream, DataFormats.XamlPackage);
+                targetRange.Load(stream, DataFormats.XamlPackage);
+            }
+
+            return copy;
         }
     }
 }

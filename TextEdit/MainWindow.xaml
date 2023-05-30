@@ -36,6 +36,7 @@
         <CommandBinding Command="local:Commands.PushRight" Executed="PushRight"/>
         <CommandBinding Command="local:Commands.PushDown" Executed="PushDown"/>
         <CommandBinding Command="local:Commands.ChangeTheme" Executed="ThemeChoiced"/>
+        <CommandBinding Command="local:Commands.TextScreenshot" Executed="TextScreenshot"/>
     </Window.CommandBindings>
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"/>
@@ -97,6 +98,8 @@
                     <Separator Margin="5"/>
                     <MenuItem Header="Find" Command="local:Commands.Find"/>
                     <MenuItem Header="Replace" Command="local:Commands.Replace"/>
+                    <Separator Margin="5"/>
+                    <MenuItem Header="Make text screenshot" Command="local:Commands.TextScreenshot"/>
                 </MenuItem>
                 <MenuItem Header="View">
                     <MenuItem Header="Pin window" Command="local:Commands.PinWindow"/>

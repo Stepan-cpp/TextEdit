@@ -9,6 +9,7 @@
     <Platforms>AnyCPU;x86</Platforms>
     <StartupObject>TextEdit.App</StartupObject>
     <PlatformTarget>x86</PlatformTarget>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
